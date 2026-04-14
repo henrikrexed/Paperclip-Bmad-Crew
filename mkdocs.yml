@@ -1,0 +1,64 @@
+site_name: BMAD Method — Paperclip Agent Template
+site_description: A community-shareable Paperclip organization template implementing the BMAD (Brainstorm, Map, Architect, Deliver) methodology with 9 specialized AI agents.
+site_url: https://henrikrexed.github.io/bmad-paperclip-template/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+repo_url: https://github.com/henrikrexed/bmad-paperclip-template
+repo_name: henrikrexed/bmad-paperclip-template
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Workflow Phases: workflow-phases.md
+  - Agents:
+    - Overview: agents/index.md
+    - "Phase 1 — Brainstormer (Mary)": agents/brainstormer.md
+    - "Phase 2 — Product Manager (John)": agents/product-manager.md
+    - "Phase 3 — Architect (Winston)": agents/architect.md
+    - "Phase 3/4 — Story Writer": agents/story-writer.md
+    - "Phase 4 — Code Reviewer (Amelia)": agents/code-reviewer.md
+    - "Phase 4 — Testing Architect": agents/testing-architect.md
+    - "Phase 3/4 — DevOps Engineer": agents/devops-engineer.md
+    - "Cross-cutting — Challenger": agents/challenger.md
+    - "Cross-cutting — O11y Engineer": agents/o11y-engineer.md
+  - Collaboration: collaboration/index.md

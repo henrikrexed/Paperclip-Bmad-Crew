@@ -1,6 +1,6 @@
 site_name: BMAD Method — Paperclip Agent Template
 site_description: A community-shareable Paperclip organization template implementing the BMAD (Brainstorm, Map, Architect, Deliver) methodology with 9 specialized AI agents.
-site_url: https://henrikrexed.github.io/bmad-paperclip-template/
+site_url: https://henrikrexed.github.io/Paperclip-Bmad-Crew/
 
 theme:
   name: material
@@ -27,8 +27,8 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
-repo_url: https://github.com/henrikrexed/bmad-paperclip-template
-repo_name: henrikrexed/bmad-paperclip-template
+repo_url: https://github.com/henrikrexed/Paperclip-Bmad-Crew
+repo_name: henrikrexed/Paperclip-Bmad-Crew
 
 markdown_extensions:
   - admonition

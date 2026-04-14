@@ -1,110 +1,181 @@
 # BMAD Paperclip Template
 
-A ready-to-use [Paperclip](https://paperclip.ing) organization template implementing the **BMAD Method** (Brainstorm, Map, Architect, Deliver) — a structured product development methodology for AI agent teams.
+**Ship products with a team of 9 AI agents that follow a proven methodology.**
 
-## What's included
+The BMAD Method (Brainstorm, Map, Architect, Deliver) gives your [Paperclip](https://paperclip.ing) agents a structured way to take a product idea from initial research all the way to production code. Each agent has a defined role, a unique persona, and explicit collaboration rules. You assign one task — the agents handle the rest.
 
-**8 specialized agents** covering the full product lifecycle:
+[![Docs](https://img.shields.io/badge/docs-live-blue)](https://henrikrexed.github.io/Paperclip-Bmad-Crew/)
 
-| Agent | Persona | Phase | Capabilities |
-|-------|---------|-------|-------------|
-| Brainstormer | Mary | Analysis | 7 — research, briefs, brainstorming, PRFAQ |
-| Product Manager | John | Planning | 6 — PRDs, epics, readiness checks |
-| Architect | Winston | Solutioning | 2 — architecture design, readiness checks |
-| Story Writer | — | Solutioning/Implementation | 2 — story decomposition, epics |
-| Code Reviewer | Amelia | Implementation | 1 — adversarial code review |
-| Testing Architect | Amelia | Implementation | 1 — test generation (API, E2E) |
-| Challenger | — | Cross-cutting | 4 — adversarial review, edge cases, editing |
-| O11y Engineer | — | Cross-cutting | 59 — OpenTelemetry, Dynatrace, observability |
+---
 
-**Documentation site** built with MkDocs Material theme, including:
-- Getting started guide
-- Workflow phase documentation
-- Per-agent capability reference
-- Cross-agent collaboration diagrams
+## Why BMAD?
 
-## Repository structure
+Most AI agent setups are either too rigid (single-agent scripts) or too loose (agents with no defined handoff). BMAD solves this with **ticket-driven handoffs**: when an agent finishes their work, they create Paperclip tickets and assign them to the next agent. Every transition is explicit, traceable, and auditable.
+
+- **No manual routing** — agents delegate work to each other automatically
+- **Quality gates at every phase** — the Challenger agent reviews artifacts before handoffs
+- **Full traceability** — every decision, handoff, and artifact is linked through Paperclip tickets
+- **Customizable** — modify agent personas, add new agents, or adjust collaboration patterns
+
+---
+
+## Quick Start
+
+**Prerequisites:** [Paperclip](https://paperclip.ing) installed (`npm install -g paperclipai`), [Claude Code](https://claude.ai/claude-code) or another supported LLM adapter.
+
+```bash
+# 1. Clone the template
+git clone https://github.com/henrikrexed/Paperclip-Bmad-Crew.git
+cd Paperclip-Bmad-Crew
+
+# 2. Make sure your Paperclip company has a CEO agent
+#    (create one with: npx paperclipai agent create --company-id <id> --name CEO --role ceo --adapter-type claude_local)
+
+# 3. Import all 9 BMAD agents into your company
+npx paperclipai import --source ./ --company-id <your-company-id>
+
+# 4. Assign a research task to the Brainstormer and watch the workflow unfold
+npx paperclipai issue create \
+  --company-id <your-company-id> \
+  --title "Research: [your topic]" \
+  --description "Conduct market research and produce a product brief." \
+  --assignee-agent-id <brainstormer-agent-id> \
+  --status todo
+```
+
+The import creates all 9 agents with their personas, capabilities, and collaboration rules. See the [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) for the full walkthrough.
+
+---
+
+## The BMAD Workflow
+
+```mermaid
+graph LR
+    A["Phase 1: Analysis"] --> B["Phase 2: Planning"]
+    B --> C["Phase 3: Solutioning"]
+    C --> D["Phase 4: Implementation"]
+
+    A1["Brainstormer (Mary)"] -.-> A
+    B1["Product Manager (John)"] -.-> B
+    C1["Architect (Winston)"] -.-> C
+    C2["Story Writer"] -.-> C
+    D1["Code Reviewer (Amelia)"] -.-> D
+    D2["Testing Architect"] -.-> D
+    D3["DevOps Engineer"] -.-> D
+
+    CH["Challenger"] -.-> A & B & C & D
+    O["O11y Engineer"] -.-> C & D
+```
+
+| Phase | Focus | Primary Agent | Key Outputs |
+|-------|-------|---------------|-------------|
+| **1. Analysis** | Research, domain analysis, feasibility | Brainstormer (Mary) | Research reports, product briefs, PRFAQs |
+| **2. Planning** | Requirements, prioritization | Product Manager (John) | PRDs, epics, readiness reports |
+| **3. Solutioning** | Architecture, story decomposition | Architect (Winston), Story Writer | Architecture docs, implementation-ready stories |
+| **4. Implementation** | Code, tests, infra, deployment | Code Reviewer (Amelia), Testing Architect, DevOps Engineer | Reviewed code, test suites, CI/CD pipelines |
+
+The **Challenger** operates across all phases as an adversarial quality gate. The **O11y Engineer** spans Phases 3-4, adding observability with OpenTelemetry instrumentation.
+
+---
+
+## The 9 Agents
+
+| Agent | Persona | Role | Key Capabilities |
+|-------|---------|------|-----------------|
+| **Brainstormer** | Mary | Analysis lead | Market research, competitive analysis, PRFAQ creation, domain deep dives |
+| **Product Manager** | John | Planning lead | PRD creation, epic decomposition, readiness checks, course corrections |
+| **Architect** | Winston | Solutioning lead | 8-step architecture design, technology selection, trade-off analysis |
+| **Story Writer** | — | Story specialist | Story decomposition, GWT acceptance criteria, task sequencing |
+| **Code Reviewer** | Amelia | Code quality | 3-layer adversarial review (Blind Hunter, Edge Case Hunter, Acceptance Auditor) |
+| **Testing Architect** | — | Test strategy | API, E2E, and integration test generation, coverage assessment |
+| **DevOps Engineer** | — | Platform & CI/CD | Pipeline setup, container orchestration, IaC, deployment automation |
+| **Challenger** | — | Quality gate | Adversarial review, gap analysis, edge case identification |
+| **O11y Engineer** | — | Observability | OpenTelemetry instrumentation, Dynatrace integration, 59 capabilities across 14 domains |
+
+---
+
+## How Ticket Handoffs Work
+
+BMAD's core mechanism is agent-to-agent delegation through Paperclip tickets:
+
+```
+Board assigns research task → Brainstormer (Mary)
+  Mary completes analysis → creates planning ticket → Product Manager (John)
+    John writes PRD → creates tickets → Architect (Winston) + Story Writer + O11y Engineer
+      Winston designs architecture → creates tickets → Code Reviewer + DevOps + Testing Architect + O11y
+```
+
+Each agent **owns the transition out of their phase**. No manual routing is needed after the initial task assignment. The Challenger is pulled in at phase boundaries to validate quality before work moves forward.
+
+---
+
+## Repository Structure
 
 ```
 .
-├── README.md                  # This file
-├── mkdocs.yml                 # MkDocs configuration
-├── agents/                    # Agent configurations
-│   ├── brainstormer/AGENTS.md
-│   ├── product-manager/AGENTS.md
-│   ├── architect/AGENTS.md
-│   ├── story-writer/AGENTS.md
-│   ├── code-reviewer/AGENTS.md
-│   ├── testing-architect/AGENTS.md
-│   ├── challenger/AGENTS.md
-│   └── o11y-engineer/AGENTS.md
-└── docs/                      # MkDocs documentation
+├── README.md               # This file
+├── CONTRIBUTING.md          # Guide for contributors
+├── mkdocs.yml              # Documentation site config
+├── requirements.txt        # Python dependencies (MkDocs)
+├── agents/                 # Agent configurations
+│   ├── brainstormer/       #   Each agent has an AGENTS.md
+│   ├── product-manager/    #   defining persona, capabilities,
+│   ├── architect/          #   and collaboration rules
+│   ├── story-writer/
+│   ├── code-reviewer/
+│   ├── testing-architect/
+│   ├── devops-engineer/
+│   ├── challenger/
+│   └── o11y-engineer/
+└── docs/                   # MkDocs documentation source
     ├── index.md
     ├── getting-started.md
     ├── workflow-phases.md
     ├── agents/
-    │   ├── index.md
-    │   ├── brainstormer.md
-    │   ├── product-manager.md
-    │   ├── architect.md
-    │   ├── story-writer.md
-    │   ├── code-reviewer.md
-    │   ├── testing-architect.md
-    │   ├── challenger.md
-    │   └── o11y-engineer.md
     └── collaboration/
-        └── index.md
 ```
 
-## Quick start
+---
 
-### 1. Import into Paperclip
+## Customization
 
-```bash
-npx paperclipai import --source ./
-```
+Each agent's behavior is defined in its `AGENTS.md` file under `agents/`. You can:
 
-### 2. Install BMAD skills
+- **Modify personas** — change communication styles, expertise areas, or decision-making approaches
+- **Add new agents** — create a directory under `agents/` with an `AGENTS.md`, add a docs page, and update `mkdocs.yml`
+- **Adjust collaboration patterns** — change which agents create tickets for whom, or add new quality gates
+- **Configure artifact paths** — set `{planning_artifacts}/` and `{implementation_artifacts}/` directories per project
 
-Each agent references specific BMAD skills in its Capabilities table. Install them via the Paperclip skill system.
-
-### 3. Set up reporting hierarchy
-
-All BMAD agents should report to a CTO or engineering manager.
-
-### 4. Start a workflow
-
-Assign research to the Brainstormer, then follow the phase flow: Analysis → Planning → Solutioning → Implementation.
-
-## The BMAD workflow
-
-```
-Phase 1: Analysis        Phase 2: Planning       Phase 3: Solutioning    Phase 4: Implementation
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Brainstormer   │────▶│ Product Manager │────▶│   Architect     │────▶│  Code Reviewer  │
-│  (Mary)         │     │ (John)          │     │   (Winston)     │     │  (Amelia)       │
-│                 │     │                 │     │   Story Writer  │     │  Testing Arch   │
-└─────────────────┘     └─────────────────┘     └─────────────────┘     └─────────────────┘
-        ▲                       ▲                       ▲                       ▲
-        └───────────────────────┴───────────────────────┴───────────────────────┘
-                                    Challenger (cross-cutting review)
-                                    O11y Engineer (observability, Phase 3-4)
-```
+---
 
 ## Documentation
 
-Build and serve the docs locally:
+Full documentation with diagrams, per-agent deep dives, and collaboration patterns:
+
+| Resource | Description |
+|----------|-------------|
+| [Getting Started](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) | CEO setup, import, running your first workflow |
+| [Workflow Phases](https://henrikrexed.github.io/Paperclip-Bmad-Crew/workflow-phases/) | Detailed phase docs with ticket flow diagrams |
+| [Agents](https://henrikrexed.github.io/Paperclip-Bmad-Crew/agents/) | Per-agent capabilities and collaboration rules |
+| [Collaboration](https://henrikrexed.github.io/Paperclip-Bmad-Crew/collaboration/) | Cross-agent interaction patterns |
+
+---
+
+## Contributing
+
+Want to improve the template, add agents, or build the docs site locally? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```bash
-pip install mkdocs-material
-mkdocs serve
+pip install -r requirements.txt
+mkdocs serve  # Preview at http://127.0.0.1:8000
 ```
 
-Then visit `http://127.0.0.1:8000`.
+---
 
-## O11y Engineer reference
+## References
 
-The Observability Agent is based on the [bmad-observability-agent](https://github.com/henrikrexed/bmad-observability-agent/blob/main/agents/o11y-engineer.md) project.
+- [Paperclip](https://paperclip.ing) — The AI agent orchestration platform
+- [O11y Engineer source](https://github.com/henrikrexed/bmad-observability-agent/blob/main/agents/o11y-engineer.md) — The observability agent this template builds on
 
 ## License
 

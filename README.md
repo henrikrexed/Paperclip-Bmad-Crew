@@ -29,12 +29,18 @@ git clone https://github.com/henrikrexed/Paperclip-Bmad-Crew.git
 cd Paperclip-Bmad-Crew
 
 # 2. Make sure your Paperclip company has a CEO agent
-#    (create one with: npx paperclipai agent create --company-id <id> --name CEO --role ceo --adapter-type claude_local)
+#    (create one with: npx paperclipai agent create --company-id <id> --name CEO --role ceo --adapter-type hermes_local)
 
 # 3. Import all 9 BMAD agents into your company
-npx paperclipai import --source ./ --company-id <your-company-id>
+npx paperclipai company import ./ \
+  --include company,agents,skills \
+  --target existing \
+  --company-id <your-company-id>
 
-# 4. Assign a research task to the Brainstormer and watch the workflow unfold
+# 4. Update BMAD project config for your company and artifact paths
+$EDITOR _bmad/bmm/config.yaml
+
+# 5. Assign a research task to the Brainstormer and watch the workflow unfold
 npx paperclipai issue create \
   --company-id <your-company-id> \
   --title "Research: [your topic]" \

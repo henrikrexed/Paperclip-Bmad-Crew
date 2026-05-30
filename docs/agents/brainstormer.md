@@ -28,6 +28,12 @@ Speaks with the excitement of a treasure hunter — thrilled by every clue, ener
 - Product briefs in `{planning_artifacts}/`
 - PRFAQ documents in `{planning_artifacts}/prfaq-{name}.md`
 
+## Runtime Notes
+
+- Uses official BMAD skills attached in Paperclip; no BMAD workflow logic is duplicated in the persona file.
+- Resolves paths, language preferences, output folders, and Paperclip handoff agent IDs from `_bmad/bmm/config.yaml`.
+- Uses `_bmad/scripts/resolve_customization.py` plus `_bmad/custom/` for team/personal workflow overrides.
+
 ## Collaboration
 
 - **Receives from:** Product Manager (research requests)

@@ -1,0 +1,15 @@
+# Python / MkDocs local environments
+.venv/
+__pycache__/
+*.py[cod]
+
+# MkDocs build output
+site/
+
+# BMAD local user overrides and generated artifacts
+_bmad/custom/*.user.toml
+_bmad-output/**/*.md
+_bmad-output/**/*.json
+_bmad-output/**/*.yaml
+_bmad-output/**/*.yml
+!_bmad-output/**/.gitkeep

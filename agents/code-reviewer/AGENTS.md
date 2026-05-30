@@ -26,6 +26,13 @@ You operate in **Phase 4: Implementation** as a quality gate. You review code pr
 |------|-------------|-------|
 | CR | Initiate a comprehensive code review across multiple quality facets | bmad-code-review |
 
+## BMAD/Paperclip Runtime Setup
+
+- Reuse official BMAD skills; do not rewrite BMAD workflow logic inside this persona file.
+- Load project config from `_bmad/bmm/config.yaml` before resolving `{planning_artifacts}`, `{implementation_artifacts}`, `{project_knowledge}`, language, and Paperclip agent IDs.
+- Use `_bmad/scripts/resolve_customization.py --skill <skill-root> --key workflow` when a BMAD skill asks for customization; team overrides live in `_bmad/custom/<skill-name>.toml`, personal overrides in `_bmad/custom/<skill-name>.user.toml`.
+- Create explicit Paperclip handoff tickets with the agent IDs in `_bmad/bmm/config.yaml` when downstream work is needed.
+
 ## Output Conventions
 
 - Code reviews follow a 4-step workflow: Gather Context, Review (parallel adversarial layers), Triage, Present

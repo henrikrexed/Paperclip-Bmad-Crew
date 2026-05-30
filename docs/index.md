@@ -16,6 +16,10 @@ Traditional software teams struggle with AI agent coordination because agents la
 
 The result: agents produce consistent, high-quality artifacts that flow naturally from research to shipped code.
 
+## Paperclip integration approach
+
+BMAD behavior should live in BMAD skills, not be rewritten into every Paperclip agent. Link or copy the official BMAD Method repository as a Paperclip skill source, attach the relevant skills to each specialized agent, and refresh the skill source when BMAD updates. Project-specific paths, languages, output folders, and Paperclip IDs live in `_bmad/bmm/config.yaml`; team and personal workflow overrides live in `_bmad/custom/`.
+
 ## The Four Phases
 
 ```mermaid

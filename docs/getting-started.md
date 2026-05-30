@@ -16,22 +16,42 @@ Use Paperclip's company import to set up the BMAD organization:
 
 ```bash
 # From the template directory
-npx paperclipai import --source ./
+npx paperclipai company import ./ --include company,agents,skills --target existing --company-id <your-company-id>
 ```
 
 Or manually create each agent through the Paperclip CLI:
 
 ```bash
 npx paperclipai agent create \
+  --company-id <your-company-id> \
   --name "Brainstormer" \
   --title "BMAD Brainstormer" \
   --role engineer \
+  --adapter-type hermes_local \
   --instructions-path agents/brainstormer/AGENTS.md
 ```
 
 ### 2. Install BMAD skills
 
 Each agent needs specific BMAD skills installed. The skill mappings are defined in each agent's `AGENTS.md` file under the Capabilities table.
+
+Current Paperclip/BMAD guidance is to **reuse BMAD as skills** rather than reimplementing BMAD behavior inside every Paperclip agent:
+
+1. Link or copy the official BMAD Method repository into Paperclip as a skill source.
+2. Create specialized Paperclip agents from this template.
+3. Attach the relevant BMAD skills to each agent. Paperclip filters available skills by each agent's capability list.
+4. Refresh the Paperclip skill source manually or with auto-sync when the BMAD Method repository changes.
+
+Recommended local layout:
+
+```text
+<workspace>/BMAD-METHOD/                 # official BMAD Method checkout
+<workspace>/Paperclip-Bmad-Crew/         # this Paperclip organization template
+<workspace>/Paperclip-Bmad-Crew/_bmad/   # project-level BMAD config and overrides
+```
+
+!!! note "Source guidance"
+    GitHub discussion [paperclipai/paperclip#4972](https://github.com/paperclipai/paperclip/discussions/4972) recommends linking BMAD Method as skills, letting Paperclip filter skills automatically, refreshing skills when BMAD updates, and adding a config file for paths, language preferences, and output directories. This template includes that project config under `_bmad/bmm/config.yaml`.
 
 Core BMAD skills to install:
 
@@ -77,15 +97,42 @@ CEO
         └── O11y Engineer
 ```
 
-### 4. Configure artifact directories
+### 4. Configure BMAD paths and customization
 
-BMAD agents write output to standardized directories. Configure these in your project:
+BMAD agents write output to standardized directories. Configure these in `_bmad/bmm/config.yaml`:
 
 - `{planning_artifacts}/` — PRDs, architecture docs, research, epics
 - `{implementation_artifacts}/` — Story files, test summaries
 - `{implementation_artifacts}/infra/` — Infrastructure code, CI/CD configs
+- `{project_knowledge}/` — Long-lived docs, research, and references
 
-These paths are referenced in each agent's Output Conventions section.
+This template provides the expected BMAD project structure:
+
+```text
+_bmad/bmm/config.yaml                    # project paths, languages, Paperclip IDs
+_bmad/scripts/resolve_customization.py   # merges skill + project custom TOML
+_bmad/custom/                            # team/personal skill overrides
+_bmad-output/planning-artifacts/         # Phase 1-3 outputs
+_bmad-output/implementation-artifacts/   # Phase 4 outputs
+```
+
+Update `_bmad/bmm/config.yaml` after cloning if your company ID, agent IDs, preferred language, or output folders differ. Keep secrets out of this file; use Paperclip secrets or environment variables for API keys.
+
+If you also want BMAD CLI-managed local skills for an IDE, run the official installer against this repository and point it at the same folders:
+
+```bash
+npx bmad-method install \
+  --directory . \
+  --modules bmm \
+  --tools claude-code,codex \
+  --user-name "Paperclip team" \
+  --communication-language English \
+  --set core.project_name=Paperclip-Bmad-Crew \
+  --set core.output_folder=_bmad-output \
+  --set bmm.planning_artifacts=_bmad-output/planning-artifacts \
+  --set bmm.implementation_artifacts=_bmad-output/implementation-artifacts \
+  --set bmm.project_knowledge=docs
+```
 
 ## Your first BMAD workflow
 

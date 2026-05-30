@@ -1,0 +1,35 @@
+# BMAD configuration for Paperclip-Bmad-Crew.
+# Agents and skills load this file to resolve shared paths, languages, and output locations.
+# Values are intentionally repository-relative where possible so the template works after cloning.
+
+user_name: "Paperclip team"
+project_name: "Paperclip-Bmad-Crew"
+communication_language: "English"
+document_output_language: "English"
+output_folder: "_bmad-output"
+
+# Phase 1-3 artifacts: brainstorming notes, research, briefs, PRDs, UX designs, architecture, epics.
+planning_artifacts: "_bmad-output/planning-artifacts"
+
+# Phase 4 artifacts: implementation stories, reviews, test summaries, deployment notes.
+implementation_artifacts: "_bmad-output/implementation-artifacts"
+
+# Long-lived project knowledge and references.
+project_knowledge: "docs"
+
+# Paperclip runtime context. Agents use these when creating explicit handoff tickets.
+paperclip:
+  company_id: "6e564770-9fdc-4fb4-b550-37e41ae47fa1"
+  api_base: "http://ai.tailb7976d.ts.net:3100/api"
+  issue_identifier_prefix: "WEB"
+  agent_ids:
+    ceo: "6802632c-7fe2-4f14-a365-5e4bb090aa6b"
+    brainstormer: "63227d1f-e628-4a09-b491-80e56b2c2fe9"
+    product_manager: "ba2fda9c-f68b-4b9f-8d03-ccc8e8614843"
+    architect: "dcef3be4-8609-4c18-9734-e0bb3f8c3dbf"
+    story_writer: "5b26060f-8b1c-43be-b613-26ff19fb34b5"
+    code_reviewer: "4c9b9636-f5bb-4295-8622-14ee31ae1734"
+    testing_architect: "c724bb94-60b6-4a77-8e17-6f4ed55d3d05"
+    devops_engineer: "0997afd6-6970-43bb-a32a-76f74a8fee8d"
+    challenger: "e2cddb09-cc27-4df1-8779-e3b63c40a3a9"
+    o11y_engineer: "b1a21ed4-4896-4eb7-9971-4fbfa71d6417"

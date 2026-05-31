@@ -1,0 +1,17 @@
+[project]
+name = "paperclip-bmad-crew"
+version = "0.1.0"
+description = "Paperclip BMAD crew with Goal 1 product intake tooling"
+requires-python = ">=3.10"
+
+[project.scripts]
+h2c-3mf-report = "h2c_3mf_report.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

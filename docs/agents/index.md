@@ -16,6 +16,22 @@ The BMAD template includes 9 specialized agents, each with a distinct persona, e
 | [Challenger](challenger.md) | — | Cross-cutting | Adversarial review, edge cases |
 | [O11y Engineer](o11y-engineer.md) | — | Cross-cutting | Observability, OpenTelemetry, Dynatrace |
 
+## Skills by Agent
+
+Each agent is provisioned with a specific set of skills by the [one-command setup](../getting-started.md#one-command-setup) — you don't install these by hand. The authoritative list lives in the root `.paperclip.yaml` manifest. Every agent also receives the two core Paperclip skills (`paperclip`, `para-memory-files`) in addition to the BMAD skills below.
+
+| Agent | BMAD skills |
+|-------|-------------|
+| Brainstormer (Mary) | `bmad-brainstorming`, `bmad-market-research`, `bmad-domain-research`, `bmad-technical-research`, `bmad-product-brief`, `bmad-prfaq`, `bmad-document-project` |
+| Product Manager (John) | `bmad-create-prd`, `bmad-validate-prd`, `bmad-edit-prd`, `bmad-create-epics-and-stories`, `bmad-check-implementation-readiness`, `bmad-correct-course` |
+| Architect (Winston) | `bmad-create-architecture`, `bmad-check-implementation-readiness` |
+| Story Writer | `bmad-create-story`, `bmad-create-epics-and-stories` |
+| Code Reviewer (Amelia) | `bmad-code-review` |
+| Testing Architect | `bmad-qa-generate-e2e-tests` |
+| DevOps Engineer | Core Paperclip skills only — no first-party `bmad-*` DevOps skills exist yet; CI/CD, deploy, and platform ops are covered by the agent's `AGENTS.md` persona |
+| Challenger | `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-prose`, `bmad-editorial-review-structure` |
+| O11y Engineer | Core Paperclip skills only — driven by the external [`bmad-observability-agent`](https://github.com/henrikrexed/bmad-observability-agent) reference implementation (install separately) |
+
 ## Org Chart
 
 ```mermaid

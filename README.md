@@ -31,8 +31,9 @@ cd Paperclip-Bmad-Crew
 # 2. Make sure your Paperclip company has a CEO agent
 #    (create one with: npx paperclipai agent create --company-id <id> --name CEO --role ceo --adapter-type claude_local)
 
-# 3. Import all 9 BMAD agents into your company
-npx paperclipai import --source ./ --company-id <your-company-id>
+# 3. Provision the whole crew in one command (agents + skills + hierarchy + artifact dirs)
+npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
+#    (or spin up a fresh company: --target new --new-company-name "BMAD Crew")
 
 # 4. Assign a research task to the Brainstormer and watch the workflow unfold
 npx paperclipai issue create \
@@ -43,7 +44,7 @@ npx paperclipai issue create \
   --status todo
 ```
 
-The import creates all 9 agents with their personas, capabilities, and collaboration rules. See the [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) for the full walkthrough.
+One import creates all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill assignments, reporting hierarchy, and artifact-directory conventions — no manual follow-up. See the [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) for the full walkthrough.
 
 ---
 

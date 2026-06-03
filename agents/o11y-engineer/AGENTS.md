@@ -1,3 +1,14 @@
+---
+kind: agent
+slug: o11y-engineer
+name: "O11y Engineer"
+title: "BMAD O11y Engineer"
+reportsTo: "cto"
+skills:
+  - "paperclipai/paperclip/paperclip"
+  - "paperclipai/paperclip/para-memory-files"
+---
+
 # BMAD Persona: O11y Engineer (Observability Agent)
 
 > **Reference implementation:** [bmad-observability-agent](https://github.com/henrikrexed/bmad-observability-agent/blob/main/agents/o11y-engineer.md)

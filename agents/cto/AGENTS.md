@@ -1,3 +1,15 @@
+---
+kind: agent
+slug: cto
+name: "Crew Manager"
+title: "BMAD Crew Manager"
+reportsTo: null
+skills:
+  - "paperclipai/paperclip/paperclip"
+  - "paperclipai/paperclip/para-memory-files"
+  - "paperclipai/paperclip/paperclip-create-agent"
+---
+
 # BMAD Crew Manager (CTO)
 
 ## Identity

@@ -1,46 +1,26 @@
-# Paperclip portable company package — BMAD Crew
+# Paperclip portable company package — BMAD Crew (schema: paperclip/v1)
 #
-# One-command setup:
+# One-command setup (provisions all 10 agents WITH skills + reporting hierarchy):
 #   npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
 #
-# This provisions all 10 agents (a crew manager + the 9 BMAD agents) with:
-#   - their persona / capabilities / collaboration rules (from agents/<slug>/AGENTS.md)
-#   - their BMAD skill assignments (the `skills:` list per agent)
-#   - the reporting hierarchy (`reportsToSlug:` wires each agent to the crew manager)
-#   - artifact-directory conventions (agent `metadata`)
+# Per-agent skills and reporting links live in each agents/<slug>/AGENTS.md frontmatter
+# (skills:, reportsTo:). This file (.paperclip.yaml) carries the non-prose extension
+# fields (role, icon, adapter, runtime, budget, metadata) keyed by agent slug, plus the
+# sidebar ordering. COMPANY.md at the package root is required by the importer.
 #
-# No manual Steps 2-4 required. To attach the crew under your existing CEO, point
-# the `cto` agent at your CEO after import:
+# After import, attach the crew under your existing CEO:
 #   npx paperclipai agent update cto --reports-to <your-ceo-agent-id>
-#
-schemaVersion: 1
-generatedAt: 2026-06-03T00:00:00.000Z
-source: null
-includes:
-  company: false
-  agents: true
-  projects: false
-  issues: false
-  skills: false
-company: null
-sidebar: null
-skills: []
-projects: []
-issues: []
-envInputs: []
 
+schema: "paperclip/v1"
 agents:
-  - slug: cto
-    name: Crew Manager
-    path: agents/cto/AGENTS.md
-    role: cto
-    title: BMAD Crew Manager
-    icon: shield
+  cto:
+    role: "cto"
+    icon: "shield"
     capabilities: null
-    reportsToSlug: null
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -49,24 +29,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - paperclipai/paperclip/paperclip-create-agent
-
-  - slug: brainstormer
-    name: Brainstormer
-    path: agents/brainstormer/AGENTS.md
-    role: researcher
-    title: BMAD Brainstormer (Mary)
-    icon: lightbulb
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  brainstormer:
+    role: "researcher"
+    icon: "lightbulb"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -75,30 +47,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-brainstorming
-      - bmad-code-org/bmad-method/bmad-market-research
-      - bmad-code-org/bmad-method/bmad-domain-research
-      - bmad-code-org/bmad-method/bmad-technical-research
-      - bmad-code-org/bmad-method/bmad-product-brief
-      - bmad-code-org/bmad-method/bmad-prfaq
-      - bmad-code-org/bmad-method/bmad-document-project
-
-  - slug: product-manager
-    name: Product Manager
-    path: agents/product-manager/AGENTS.md
-    role: pm
-    title: BMAD Product Manager (John)
-    icon: brain
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  product-manager:
+    role: "pm"
+    icon: "brain"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -107,29 +65,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-create-prd
-      - bmad-code-org/bmad-method/bmad-validate-prd
-      - bmad-code-org/bmad-method/bmad-edit-prd
-      - bmad-code-org/bmad-method/bmad-create-epics-and-stories
-      - bmad-code-org/bmad-method/bmad-check-implementation-readiness
-      - bmad-code-org/bmad-method/bmad-correct-course
-
-  - slug: architect
-    name: Architect
-    path: agents/architect/AGENTS.md
-    role: engineer
-    title: BMAD Architect (Winston)
-    icon: cpu
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  architect:
+    role: "engineer"
+    icon: "cpu"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -138,25 +83,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-create-architecture
-      - bmad-code-org/bmad-method/bmad-check-implementation-readiness
-
-  - slug: story-writer
-    name: Story Writer
-    path: agents/story-writer/AGENTS.md
-    role: pm
-    title: BMAD Story Writer
-    icon: code
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  story-writer:
+    role: "pm"
+    icon: "code"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -165,25 +101,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-create-story
-      - bmad-code-org/bmad-method/bmad-create-epics-and-stories
-
-  - slug: code-reviewer
-    name: Code Reviewer
-    path: agents/code-reviewer/AGENTS.md
-    role: engineer
-    title: BMAD Code Reviewer (Amelia)
-    icon: search
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  code-reviewer:
+    role: "engineer"
+    icon: "search"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -192,24 +119,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-code-review
-
-  - slug: testing-architect
-    name: Testing Architect
-    path: agents/testing-architect/AGENTS.md
-    role: qa
-    title: BMAD Testing Architect
-    icon: shield
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  testing-architect:
+    role: "qa"
+    icon: "shield"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -218,24 +137,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-qa-generate-e2e-tests
-
-  - slug: challenger
-    name: Challenger
-    path: agents/challenger/AGENTS.md
-    role: researcher
-    title: BMAD Challenger
-    icon: eye
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  challenger:
+    role: "researcher"
+    icon: "eye"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -244,30 +155,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-      - bmad-code-org/bmad-method/bmad-review-adversarial-general
-      - bmad-code-org/bmad-method/bmad-review-edge-case-hunter
-      - bmad-code-org/bmad-method/bmad-editorial-review-prose
-      - bmad-code-org/bmad-method/bmad-editorial-review-structure
-
-  # DevOps Engineer: no first-party bmad-* devops skills exist in bmad-code-org/bmad-method
-  # today, so only the core Paperclip skills are provisioned. Add devops skills here once
-  # they are published (tracked in onboarding docs).
-  - slug: devops-engineer
-    name: DevOps Engineer
-    path: agents/devops-engineer/AGENTS.md
-    role: devops
-    title: BMAD DevOps Engineer
-    icon: wrench
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  devops-engineer:
+    role: "devops"
+    icon: "wrench"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -276,26 +173,16 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
-
-  # O11y Engineer: driven by the external bmad-observability-agent reference implementation
-  # rather than standalone bmad-* skills, so only the core Paperclip skills are provisioned
-  # here. Install that agent package separately for its observability capabilities.
-  - slug: o11y-engineer
-    name: O11y Engineer
-    path: agents/o11y-engineer/AGENTS.md
-    role: engineer
-    title: BMAD O11y Engineer
-    icon: zap
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+  o11y-engineer:
+    role: "engineer"
+    icon: "zap"
     capabilities: null
-    reportsToSlug: cto
-    adapterType: claude_local
-    adapterConfig: {}
-    runtimeConfig:
+    adapter:
+      type: "claude_local"
+      config: {}
+    runtime:
       heartbeat:
         enabled: true
         intervalSec: 0
@@ -304,8 +191,17 @@ agents:
     permissions: {}
     budgetMonthlyCents: 1500000
     metadata:
-      planningArtifacts: docs/planning
-      implementationArtifacts: docs/implementation
-    skills:
-      - paperclipai/paperclip/paperclip
-      - paperclipai/paperclip/para-memory-files
+      planningArtifacts: "docs/planning"
+      implementationArtifacts: "docs/implementation"
+sidebar:
+  agents:
+    - "cto"
+    - "brainstormer"
+    - "product-manager"
+    - "architect"
+    - "story-writer"
+    - "code-reviewer"
+    - "testing-architect"
+    - "challenger"
+    - "devops-engineer"
+    - "o11y-engineer"

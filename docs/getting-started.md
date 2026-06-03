@@ -6,97 +6,59 @@ This guide walks you through setting up a BMAD agent team on Paperclip.
 
 - [Paperclip](https://paperclip.ing) installed and configured
 - Claude Code or another supported LLM adapter
-- A Paperclip company created
+- A Paperclip company you can import into. Company import is **CEO/board-gated**, so run it as a board user or have your CEO agent run it.
 
-## Installation
+## One-command setup
 
-### 1. Import the template
+The repository ships a portable company package (`.paperclip.yaml` at the root) that provisions the entire crew in a single command — no manual skill installation, hierarchy wiring, or artifact-directory configuration required.
 
-Use Paperclip's company import to set up the BMAD organization:
-
-```bash
-# From the template directory
-npx paperclipai import --source ./
-```
-
-Or manually create each agent through the Paperclip CLI:
+From the template directory, import into your existing company:
 
 ```bash
-npx paperclipai agent create \
-  --name "Brainstormer" \
-  --title "BMAD Brainstormer" \
-  --role engineer \
-  --instructions-path agents/brainstormer/AGENTS.md
+npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
 ```
 
-### 2. Install BMAD skills
+Prefer a clean slate? Create a brand-new company instead:
 
-Each agent needs specific BMAD skills installed. The skill mappings are defined in each agent's `AGENTS.md` file under the Capabilities table.
-
-Core BMAD skills to install:
-
-| Skill | Used by |
-|-------|---------|
-| `bmad-brainstorming` | Brainstormer |
-| `bmad-market-research` | Brainstormer |
-| `bmad-domain-research` | Brainstormer |
-| `bmad-technical-research` | Brainstormer |
-| `bmad-product-brief` | Brainstormer |
-| `bmad-prfaq` | Brainstormer |
-| `bmad-document-project` | Brainstormer |
-| `bmad-create-prd` | Product Manager |
-| `bmad-validate-prd` | Product Manager |
-| `bmad-edit-prd` | Product Manager |
-| `bmad-create-epics-and-stories` | Product Manager, Story Writer |
-| `bmad-check-implementation-readiness` | Product Manager, Architect |
-| `bmad-correct-course` | Product Manager |
-| `bmad-create-architecture` | Architect |
-| `bmad-create-story` | Story Writer |
-| `bmad-code-review` | Code Reviewer |
-| `bmad-qa-generate-e2e-tests` | Testing Architect |
-| `bmad-review-adversarial-general` | Challenger |
-| `bmad-review-edge-case-hunter` | Challenger |
-| `bmad-editorial-review-prose` | Challenger |
-| `bmad-editorial-review-structure` | Challenger |
-| `bmad-cicd-pipeline` | DevOps Engineer |
-| `bmad-container-deploy` | DevOps Engineer |
-| `bmad-infra-code` | DevOps Engineer |
-| `bmad-deploy-manifest` | DevOps Engineer |
-| `bmad-security-scan` | DevOps Engineer |
-| `bmad-deploy-rollback` | DevOps Engineer |
-| `bmad-env-management` | DevOps Engineer |
-| `bmad-platform-monitor` | DevOps Engineer |
-
-!!! note "O11y Engineer skill"
-    The O11y Engineer is driven by the [`bmad-observability-agent`](https://github.com/henrikrexed/bmad-observability-agent) reference implementation rather than the standalone `bmad-*` skills above. Install that agent package to provision its capabilities (pipeline configuration, instrumentation scoring, cardinality optimization, vendor validation).
-
-### 3. Set up the reporting hierarchy
-
-BMAD agents should report to a CTO or engineering manager. Example hierarchy:
-
-```
-CEO
-  └── CTO
-        ├── Brainstormer (Mary)
-        ├── Product Manager (John)
-        ├── Architect (Winston)
-        ├── Story Writer
-        ├── Code Reviewer (Amelia)
-        ├── Testing Architect
-        ├── DevOps Engineer
-        ├── Challenger
-        └── O11y Engineer
+```bash
+npx paperclipai company import ./ --target new --new-company-name "BMAD Crew"
 ```
 
-### 4. Configure artifact directories
+### What the import provisions
 
-BMAD agents write output to standardized directories. Configure these in your project:
+One run sets up **10 agents** — a crew manager (`cto`) plus the 9 BMAD specialists — each fully wired:
 
-- `{planning_artifacts}/` — PRDs, architecture docs, research, epics
-- `{implementation_artifacts}/` — Story files, test summaries
-- `{implementation_artifacts}/infra/` — Infrastructure code, CI/CD configs
+- **Persona, capabilities, and collaboration rules** loaded from `agents/<slug>/AGENTS.md`
+- **BMAD skill assignments** per agent (see [Skills by agent](agents/index.md#skills-by-agent))
+- **Reporting hierarchy** — all 9 specialists report to the crew manager (`cto`)
+- **Artifact-directory conventions** (`planningArtifacts` / `implementationArtifacts`) in each agent's metadata
 
-These paths are referenced in each agent's Output Conventions section.
+```
+Crew Manager (cto)
+  ├── Brainstormer (Mary)
+  ├── Product Manager (John)
+  ├── Architect (Winston)
+  ├── Story Writer
+  ├── Code Reviewer (Amelia)
+  ├── Testing Architect
+  ├── DevOps Engineer
+  ├── Challenger
+  └── O11y Engineer
+```
+
+### Optional: attach the crew under your existing CEO
+
+The import creates the crew manager (`cto`) at the top of the BMAD reporting tree. To slot the crew under a CEO agent you already run, point the crew manager at it after import:
+
+```bash
+npx paperclipai agent update cto --reports-to <your-ceo-agent-id>
+```
+
+### Notes on skill coverage
+
+- Every agent also receives the two core Paperclip skills (`paperclip`, `para-memory-files`) in addition to its BMAD skills.
+- The **DevOps Engineer** is provisioned with only the core Paperclip skills today: there are no first-party `bmad-*` DevOps skills in `bmad-code-org/bmad-method` yet. The agent's persona still covers CI/CD, deployment, and platform ops via its `AGENTS.md` instructions.
+- The **O11y Engineer** is driven by the external [`bmad-observability-agent`](https://github.com/henrikrexed/bmad-observability-agent) reference implementation rather than standalone `bmad-*` skills. Install that agent package separately to provision its observability capabilities (pipeline configuration, instrumentation scoring, cardinality optimization, vendor validation).
 
 ## Your first BMAD workflow
 

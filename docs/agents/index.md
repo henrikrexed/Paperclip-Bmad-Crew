@@ -16,6 +16,22 @@ The BMAD template includes 9 specialized agents, each with a distinct persona, e
 | [Challenger](challenger.md) | — | Cross-cutting | Adversarial review, edge cases |
 | [O11y Engineer](o11y-engineer.md) | — | Cross-cutting | Observability, OpenTelemetry, Dynatrace |
 
+## Skills by Agent
+
+Each agent is provisioned with a specific set of BMAD skills (defined in its `AGENTS.md` Capabilities table). Install these when setting up the crew — see [Getting Started → Install BMAD skills](../getting-started.md#2-install-bmad-skills).
+
+| Agent | BMAD skills |
+|-------|-------------|
+| Brainstormer (Mary) | `bmad-brainstorming`, `bmad-market-research`, `bmad-domain-research`, `bmad-technical-research`, `bmad-product-brief`, `bmad-prfaq`, `bmad-document-project` |
+| Product Manager (John) | `bmad-create-prd`, `bmad-validate-prd`, `bmad-edit-prd`, `bmad-create-epics-and-stories`, `bmad-check-implementation-readiness`, `bmad-correct-course` |
+| Architect (Winston) | `bmad-create-architecture`, `bmad-check-implementation-readiness` |
+| Story Writer | `bmad-create-story`, `bmad-create-epics-and-stories` |
+| Code Reviewer (Amelia) | `bmad-code-review` |
+| Testing Architect | `bmad-qa-generate-e2e-tests` |
+| DevOps Engineer | `bmad-cicd-pipeline`, `bmad-container-deploy`, `bmad-infra-code`, `bmad-deploy-manifest`, `bmad-security-scan`, `bmad-deploy-rollback`, `bmad-env-management`, `bmad-platform-monitor` |
+| Challenger | `bmad-review-adversarial-general`, `bmad-review-edge-case-hunter`, `bmad-editorial-review-prose`, `bmad-editorial-review-structure` |
+| O11y Engineer | [`bmad-observability-agent`](https://github.com/henrikrexed/bmad-observability-agent) (reference implementation) |
+
 ## Org Chart
 
 ```mermaid

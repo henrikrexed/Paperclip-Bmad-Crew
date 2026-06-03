@@ -58,6 +58,17 @@ Core BMAD skills to install:
 | `bmad-review-edge-case-hunter` | Challenger |
 | `bmad-editorial-review-prose` | Challenger |
 | `bmad-editorial-review-structure` | Challenger |
+| `bmad-cicd-pipeline` | DevOps Engineer |
+| `bmad-container-deploy` | DevOps Engineer |
+| `bmad-infra-code` | DevOps Engineer |
+| `bmad-deploy-manifest` | DevOps Engineer |
+| `bmad-security-scan` | DevOps Engineer |
+| `bmad-deploy-rollback` | DevOps Engineer |
+| `bmad-env-management` | DevOps Engineer |
+| `bmad-platform-monitor` | DevOps Engineer |
+
+!!! note "O11y Engineer skill"
+    The O11y Engineer is driven by the [`bmad-observability-agent`](https://github.com/henrikrexed/bmad-observability-agent) reference implementation rather than the standalone `bmad-*` skills above. Install that agent package to provision its capabilities (pipeline configuration, instrumentation scoring, cardinality optimization, vendor validation).
 
 ### 3. Set up the reporting hierarchy
 

@@ -4,27 +4,90 @@ This guide walks you through setting up a BMAD agent team on Paperclip.
 
 ## Prerequisites
 
-- [Paperclip](https://paperclip.ing) installed and configured
+- [Paperclip](https://paperclip.ing) installed (`npm install -g paperclipai`)
 - Claude Code or another supported LLM adapter
-- A Paperclip company you can import into. Company import is **CEO/board-gated**, so run it as a board user or have your CEO agent run it.
 
-## One-command setup
+## Pick your starting point
 
-The repository ships a portable company package (`.paperclip.yaml` at the root) that provisions the entire crew in a single command — no manual skill installation, hierarchy wiring, or artifact-directory configuration required.
+The setup steps depend on whether you already have a Paperclip company. Company import is **CEO/board-gated**, so you must run it as an authenticated board user (or have a CEO agent run it). On a brand-new install there is no company, no board admin, and no agents yet — that's the first thing we fix.
 
-From the template directory, import into your existing company:
+| Your situation | Go to |
+|----------------|-------|
+| Fresh Paperclip install — no company, no CEO/CTO yet | **[Path A — Empty instance](#path-a-empty-instance)** |
+| You already run a Paperclip company with a CEO | **[Path B — Existing org](#path-b-existing-org)** |
+
+> The repository ships a portable company package (`.paperclip.yaml` + `COMPANY.md` at the root) that provisions the entire crew in a single import — no manual skill installation, hierarchy wiring, or artifact-directory configuration required. Both paths use the same package; they differ only in how you get an authenticated company to import into.
+
+---
+
+## Path A — Empty instance
+
+A fresh Paperclip install has no company, no board admin, and no agents. Trying to import straight away fails because there is nothing to authenticate as and nothing to import into. Bootstrap the instance first, then create the company and crew in one import.
+
+### A1. Start the instance and claim the first admin
 
 ```bash
+# Bootstrap local config, run health checks, and start Paperclip
+npx paperclipai run
+
+# In a second terminal: mint a one-time invite to claim the first instance admin
+npx paperclipai auth bootstrap-ceo
+```
+
+`auth bootstrap-ceo` prints a one-time invite URL. Open it in your browser and claim the first **board admin** account — this human account is the top-level owner ("CEO") of your instance. (Re-run with `--force` only if you need to issue a fresh invite after an admin already exists.)
+
+### A2. Authenticate the CLI as that board user
+
+```bash
+npx paperclipai auth login
+npx paperclipai auth whoami   # confirm you are logged in as the board admin
+```
+
+Import is board-gated, so the CLI must be logged in before the next step works.
+
+### A3. Create the company and the whole crew in one import
+
+```bash
+git clone https://github.com/henrikrexed/Paperclip-Bmad-Crew.git
+cd Paperclip-Bmad-Crew
+
+npx paperclipai company import ./ --target new --new-company-name "BMAD Crew" --include agents
+```
+
+`--target new` creates the company **and** provisions all 10 agents in the same run — including the crew manager (`cto`). That resolves the "no company / no CTO" errors a fresh install hits. Skip ahead to [What the import provisions](#what-the-import-provisions).
+
+---
+
+## Path B — Existing org
+
+You already run a Paperclip company with a CEO agent and a board admin. Import the BMAD crew on top of it.
+
+```bash
+git clone https://github.com/henrikrexed/Paperclip-Bmad-Crew.git
+cd Paperclip-Bmad-Crew
+
+# Make sure your CLI is authenticated as a board user (import is board-gated)
+npx paperclipai auth whoami || npx paperclipai auth login
+
 npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
 ```
 
-Prefer a clean slate? Create a brand-new company instead:
+By default the imported crew manager (`cto`) sits at the top of the BMAD reporting tree with `reportsTo: null`. To slot the whole crew **under your existing CEO**, edit `agents/cto/AGENTS.md` before importing and set the `reportsTo:` frontmatter field to your CEO agent's slug:
 
-```bash
-npx paperclipai company import ./ --target new --new-company-name "BMAD Crew"
+```yaml
+---
+kind: agent
+slug: cto
+name: "Crew Manager"
+reportsTo: "ceo"   # ← your existing CEO agent's slug
+---
 ```
 
-### What the import provisions
+The 9 specialists already point at `cto` via their own `reportsTo:` frontmatter, so re-parenting the crew manager moves the entire tree.
+
+---
+
+## What the import provisions
 
 One run sets up **10 agents** — a crew manager (`cto`) plus the 9 BMAD specialists — each fully wired:
 
@@ -46,13 +109,7 @@ Crew Manager (cto)
   └── O11y Engineer
 ```
 
-### Optional: attach the crew under your existing CEO
-
-The import creates the crew manager (`cto`) at the top of the BMAD reporting tree. To slot the crew under a CEO agent you already run, point the crew manager at it after import:
-
-```bash
-npx paperclipai agent update cto --reports-to <your-ceo-agent-id>
-```
+By default the crew manager (`cto`) sits at the top of the reporting tree. If you want to attach the crew under a CEO agent you already run, see the `reportsTo:` edit in [Path B](#path-b-existing-org) — do this **before** importing.
 
 ### Notes on skill coverage
 

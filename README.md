@@ -28,12 +28,17 @@ Most AI agent setups are either too rigid (single-agent scripts) or too loose (a
 git clone https://github.com/henrikrexed/Paperclip-Bmad-Crew.git
 cd Paperclip-Bmad-Crew
 
-# 2. Make sure your Paperclip company has a CEO agent
-#    (create one with: npx paperclipai agent create --company-id <id> --name CEO --role ceo --adapter-type claude_local)
+# 2. Authenticate the CLI as a board user (import is board-gated).
+#    Fresh install with no company yet? First bootstrap the instance:
+#      npx paperclipai run                 # start Paperclip
+#      npx paperclipai auth bootstrap-ceo  # claim the first board admin via the printed invite URL
+npx paperclipai auth login
 
 # 3. Provision the whole crew in one command (agents + skills + hierarchy + artifact dirs)
-npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
-#    (or spin up a fresh company: --target new --new-company-name "BMAD Crew")
+#    Fresh instance — create the company AND the crew together:
+npx paperclipai company import ./ --target new --new-company-name "BMAD Crew" --include agents
+#    Existing company — import the crew into it:
+#      npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
 
 # 4. Assign a research task to the Brainstormer and watch the workflow unfold
 npx paperclipai issue create \
@@ -44,7 +49,7 @@ npx paperclipai issue create \
   --status todo
 ```
 
-One import creates all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill assignments, reporting hierarchy, and artifact-directory conventions — no manual follow-up. See the [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) for the full walkthrough.
+One import creates all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill assignments, reporting hierarchy, and artifact-directory conventions — no manual follow-up. New to Paperclip? The [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) covers both the **empty-instance** and **existing-org** onboarding paths step by step.
 
 ---
 
@@ -155,7 +160,7 @@ Full documentation with diagrams, per-agent deep dives, and collaboration patter
 
 | Resource | Description |
 |----------|-------------|
-| [Getting Started](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) | CEO setup, import, running your first workflow |
+| [Getting Started](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) | Empty-instance & existing-org onboarding, import, first workflow |
 | [Workflow Phases](https://henrikrexed.github.io/Paperclip-Bmad-Crew/workflow-phases/) | Detailed phase docs with ticket flow diagrams |
 | [Agents](https://henrikrexed.github.io/Paperclip-Bmad-Crew/agents/) | Per-agent capabilities and collaboration rules |
 | [Collaboration](https://henrikrexed.github.io/Paperclip-Bmad-Crew/collaboration/) | Cross-agent interaction patterns |

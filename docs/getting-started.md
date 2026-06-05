@@ -81,6 +81,16 @@ cd Paperclip-Bmad-Crew
 # Make sure your CLI is authenticated as a board user (import is board-gated)
 npx paperclipai auth whoami || npx paperclipai auth login
 
+# One command: installs the BMAD skill content, then imports the crew, in order.
+./setup.sh --company-id <your-company-id>
+```
+
+`setup.sh` is the supported one-command path. It installs the `bmad-*` skill content **before** the agent import — so every skill reference resolves on the first pass, with no missing-skill warnings — then runs the company import. Pass `--ceo-agent-id <your-ceo-agent-id>` to have it print the exact command to re-parent the crew under your CEO once it finishes. Run `./setup.sh --help` for all options.
+
+<details>
+<summary>Prefer to run the two steps yourself?</summary>
+
+```bash
 # Install the BMAD skill content into your company first, so the agent import
 # resolves every skill reference immediately (no missing-skill warnings).
 npx paperclipai skills import https://github.com/bmad-code-org/BMAD-METHOD --company-id <your-company-id>
@@ -88,7 +98,9 @@ npx paperclipai skills import https://github.com/bmad-code-org/BMAD-METHOD --com
 npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
 ```
 
-Because you already have a company UUID, install the skills **before** the agent import — that way every `bmad-*` reference resolves on the first pass. See [Install the BMAD skills](#install-the-bmad-skills) for details.
+Because you already have a company UUID, install the skills **before** the agent import. See [Install the BMAD skills](#install-the-bmad-skills) for details.
+
+</details>
 
 By default the imported crew manager (`cto`) sits at the top of the BMAD reporting tree with `reportsTo: null`. To slot the whole crew **under your existing CEO**, edit `agents/cto/AGENTS.md` before importing and set the `reportsTo:` frontmatter field to your CEO agent's slug:
 

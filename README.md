@@ -34,13 +34,18 @@ cd Paperclip-Bmad-Crew
 #      npx paperclipai auth bootstrap-ceo  # claim the first board admin via the printed invite URL
 npx paperclipai auth login
 
-# 3. Provision the whole crew in one command (agents + skills + hierarchy + artifact dirs)
+# 3. Provision the whole crew (agents + reporting hierarchy + artifact dirs)
 #    Fresh instance — create the company AND the crew together:
 npx paperclipai company import ./ --target new --new-company-name "BMAD Crew" --include agents
 #    Existing company — import the crew into it:
 #      npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
 
-# 4. Assign a research task to the Brainstormer and watch the workflow unfold
+# 4. Install the BMAD skill content into the company (the import wires up skill
+#    references but does not bundle the skill payloads; the two core paperclip
+#    skills are auto-seeded, the bmad-* skills are installed once from upstream)
+npx paperclipai skills import https://github.com/bmad-code-org/BMAD-METHOD --company-id <your-company-id>
+
+# 5. Assign a research task to the Brainstormer and watch the workflow unfold
 npx paperclipai issue create \
   --company-id <your-company-id> \
   --title "Research: [your topic]" \
@@ -49,7 +54,7 @@ npx paperclipai issue create \
   --status todo
 ```
 
-One import creates all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill assignments, reporting hierarchy, and artifact-directory conventions — no manual follow-up. New to Paperclip? The [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) covers both the **empty-instance** and **existing-org** onboarding paths step by step.
+The import creates all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill *references*, reporting hierarchy, and artifact-directory conventions. The skill *content* is installed separately (step 4): the two core paperclip skills are seeded automatically, and the `bmad-*` skills are installed once from the upstream [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) repo. New to Paperclip? The [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) covers both the **empty-instance** and **existing-org** onboarding paths step by step, including skill installation and verification.
 
 ---
 

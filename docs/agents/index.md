@@ -18,7 +18,7 @@ The BMAD template includes 9 specialized agents, each with a distinct persona, e
 
 ## Skills by Agent
 
-Each agent is provisioned with a specific set of skills by the [one-command setup](../getting-started.md#one-command-setup) — you don't install these by hand. The authoritative list lives in the root `.paperclip.yaml` manifest. Every agent also receives the two core Paperclip skills (`paperclip`, `para-memory-files`) in addition to the BMAD skills below.
+Each agent declares the skills it uses in the `skills:` frontmatter of its `agents/<slug>/AGENTS.md` (that is the authoritative list). The import wires these references onto each agent; the skill *content* is installed into the company separately — see [Install the BMAD skills](../getting-started.md#install-the-bmad-skills). Every agent also receives the two core Paperclip skills (`paperclip`, `para-memory-files`) in addition to the BMAD skills below.
 
 | Agent | BMAD skills |
 |-------|-------------|

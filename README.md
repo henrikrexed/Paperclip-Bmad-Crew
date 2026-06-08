@@ -23,22 +23,22 @@ Most AI agent setups are either too rigid (single-agent scripts) or too loose (a
 
 **Prerequisites:** [Paperclip](https://paperclip.ing) installed (`npm install -g paperclipai`), [Claude Code](https://claude.ai/claude-code) or another supported LLM adapter.
 
+If you already run a Paperclip company, the bundled `setup.sh` does the whole onboarding in one command:
+
 ```bash
 # 1. Clone the template
 git clone https://github.com/henrikrexed/Paperclip-Bmad-Crew.git
 cd Paperclip-Bmad-Crew
 
-# 2. Authenticate the CLI as a board user (import is board-gated).
-#    Fresh install with no company yet? First bootstrap the instance:
-#      npx paperclipai run                 # start Paperclip
-#      npx paperclipai auth bootstrap-ceo  # claim the first board admin via the printed invite URL
+# 2. Authenticate the CLI as a board user (import is board-gated)
 npx paperclipai auth login
 
-# 3. Provision the whole crew in one command (agents + skills + hierarchy + artifact dirs)
-#    Fresh instance — create the company AND the crew together:
-npx paperclipai company import ./ --target new --new-company-name "BMAD Crew" --include agents
-#    Existing company — import the crew into it:
-#      npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
+# 3. Provision the whole crew — installs the BMAD skill content AND imports the
+#    10 agents + reporting hierarchy + skill references, in the right order.
+./setup.sh --company-id <your-company-id>
+#    Attaching the crew under an existing CEO? Pass it in and the script prints
+#    the exact re-parent command on success:
+#      ./setup.sh --company-id <your-company-id> --ceo-agent-id <your-ceo-agent-id>
 
 # 4. Assign a research task to the Brainstormer and watch the workflow unfold
 npx paperclipai issue create \
@@ -49,7 +49,27 @@ npx paperclipai issue create \
   --status todo
 ```
 
-One import creates all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill assignments, reporting hierarchy, and artifact-directory conventions — no manual follow-up. New to Paperclip? The [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) covers both the **empty-instance** and **existing-org** onboarding paths step by step.
+`setup.sh` runs two steps for you: it installs the `bmad-*` skill content from the upstream [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) repo, then imports the company package — all 10 agents (a crew manager plus the 9 BMAD specialists) with their personas, capabilities, collaboration rules, per-agent skill references, reporting hierarchy, and artifact-directory conventions. Running the skill install first means every reference resolves on the first pass, with no missing-skill warnings.
+
+**Fresh Paperclip install with no company yet?** `company import --target new` creates the company and crew together, but the skill content still has to be installed against the new company's UUID afterward. The [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) walks through both the **empty-instance** (Path A) and **existing-org** (Path B) paths step by step, including skill installation and verification.
+
+> **Skills are installed from upstream, not vendored.** The `agents/<slug>/AGENTS.md` files *reference* skills by canonical key; the `bmad-*` skill bodies are pulled from upstream [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) by `setup.sh` at setup time. Nothing is copied into this repo — that avoids IP/licensing concerns and staleness. See [`skills-manifest.md`](skills-manifest.md) for the full list of installed skills and the per-agent mapping.
+
+<details>
+<summary>Prefer to run the steps manually?</summary>
+
+```bash
+# Install the BMAD skill content into the company first, so the agent import
+# resolves every skill reference immediately.
+npx paperclipai skills import https://github.com/bmad-code-org/BMAD-METHOD --company-id <your-company-id>
+
+# Then import the crew.
+npx paperclipai company import ./ --target existing --company-id <your-company-id> --include agents
+```
+
+The two core paperclip skills (`paperclip`, `para-memory-files`) are seeded into every company automatically; only the `bmad-*` skills need the explicit install above.
+
+</details>
 
 ---
 
@@ -120,6 +140,8 @@ Each agent **owns the transition out of their phase**. No manual routing is need
 ```
 .
 ├── README.md               # This file
+├── setup.sh                # One-command turnkey onboarding (skills + agent import)
+├── skills-manifest.md      # Every bmad-* skill setup.sh installs + per-agent map
 ├── CONTRIBUTING.md          # Guide for contributors
 ├── mkdocs.yml              # Documentation site config
 ├── requirements.txt        # Python dependencies (MkDocs)

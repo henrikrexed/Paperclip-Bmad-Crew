@@ -53,6 +53,8 @@ npx paperclipai issue create \
 
 **Fresh Paperclip install with no company yet?** `company import --target new` creates the company and crew together, but the skill content still has to be installed against the new company's UUID afterward. The [Getting Started guide](https://henrikrexed.github.io/Paperclip-Bmad-Crew/getting-started/) walks through both the **empty-instance** (Path A) and **existing-org** (Path B) paths step by step, including skill installation and verification.
 
+> **Skills are installed from upstream, not vendored.** The `agents/<slug>/AGENTS.md` files *reference* skills by canonical key; the `bmad-*` skill bodies are pulled from upstream [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) by `setup.sh` at setup time. Nothing is copied into this repo — that avoids IP/licensing concerns and staleness. See [`skills-manifest.md`](skills-manifest.md) for the full list of installed skills and the per-agent mapping.
+
 <details>
 <summary>Prefer to run the steps manually?</summary>
 
@@ -139,6 +141,7 @@ Each agent **owns the transition out of their phase**. No manual routing is need
 .
 ├── README.md               # This file
 ├── setup.sh                # One-command turnkey onboarding (skills + agent import)
+├── skills-manifest.md      # Every bmad-* skill setup.sh installs + per-agent map
 ├── CONTRIBUTING.md          # Guide for contributors
 ├── mkdocs.yml              # Documentation site config
 ├── requirements.txt        # Python dependencies (MkDocs)
